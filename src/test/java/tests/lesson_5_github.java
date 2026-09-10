@@ -10,9 +10,10 @@ public class lesson_5_github {
     @Test
     void solutionsEnterprise() {
         open("https://github.com");
-        $("nav").$(byText("Solutions")).hover();
-       // $(byTagAndText("button","Solutions")).hover();
+        // $("nav").$(byText("Solutions")).hover();
+        $(byTagAndText("button","Solutions")).hover();
         $(byText("Enterprises")).click();
+       // $("[href='/enterprise']").click();
         sleep(5000);
         $("[data-testid=Hero-grid]").$("span").shouldHave(text(("Bring your DevOps together on one secure platform")));
 
