@@ -6,7 +6,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.text;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -17,18 +19,18 @@ public class lesson_3_demoqa {
         Configuration.browserSize = "1920x1080";
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.pageLoadStrategy = "eager";
-        Configuration.holdBrowserOpen = true;
+        Configuration.holdBrowserOpen = false;
         Configuration.timeout = 5000; // default 4000
     }
 
-    @AfterAll
-    static void afterAll() {
-        System.out.println("\n### afterAll()\n");
-    }
+  //  @AfterAll
+   // static void afterAll() {
+   //             closeWebDriver();
+    //        }
 
 
     @Test
-    void fillFormTest() {
+    void fullFillFormTest() {
         open("/automation-practice-form");
         $("#firstName").setValue("Anastasiia");
         $("#lastName").setValue("Belevich");
@@ -52,6 +54,7 @@ public class lesson_3_demoqa {
 
         $("#submit").click();
 
+        $(".modal-dialog").should(appear);
         $$("tbody tr").findBy(text("Student Name")).shouldHave(text("Anastasiia Belevich"));
         $$("tbody tr").findBy(text("Student Email")).shouldHave(text("nasti@mail.ru"));
         $$("tbody tr").findBy(text("Gender")).shouldHave(text("Female"));
@@ -63,4 +66,40 @@ public class lesson_3_demoqa {
         $$("tbody tr").findBy(text("State and City")).shouldHave(text("Haryana Karnal"));
 
     }
+
+
+    @Test
+    void minFillFormTest() {
+        open("/automation-practice-form");
+        $("#firstName").setValue("Anastasiia");
+        $("#lastName").setValue("Belevich");
+        $("[for=gender-radio-2]").click();
+        $("#userNumber").setValue("1234567895");
+
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").selectOption("April");
+        $(".react-datepicker__year-select").selectOption("1990");
+        $(".react-datepicker__day--015").click();
+
+        $("#submit").click();
+
+        $(".modal-dialog").should(appear);
+        $$("tbody tr").findBy(text("Student Name")).shouldHave(text("Anastasiia Belevich"));
+        $$("tbody tr").findBy(text("Gender")).shouldHave(text("Female"));
+        $$("tbody tr").findBy(text("Mobile")).shouldHave(text("1234567895"));
+        $$("tbody tr").findBy(text("Date of Birth")).shouldHave(text("15 April,1990"));
+
+
+    }
+
+    @Test
+    void notFillFormTest() {
+        open("/automation-practice-form");
+        $("#submit").click();
+        $(".modal-content").shouldNotBe(visible, Duration.ofSeconds(10));
+
+        }
+    //bs-form-valid-border-color: #198754;
+    //bs-form-invalid-border-color: #dc3545;
+
 }
