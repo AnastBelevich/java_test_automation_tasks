@@ -34,34 +34,29 @@ public class RegistrationFormWithPageObjectLesson6Test {
                 .inputLastName("Belevich")
                 .inputEmail("nasti@mail.ru")
                 .inputgender("Female")
-                .inputNumber("1234567895");
+                .inputNumber("1234567895")
+                .inputDateOfBirthday("April", "1990", "22")
+                .inputSubjects("тема")
+                .selectHobbyes("Reading")
+                .selectHobbyes("Music")
+                .addImg("img/cat.jpg")
+                .addAddress("Адрес")
+                .selectStateAndCity("Haryana","Karnal")
+                .submit()
+                .checkModalAppeared()
+                .checkResult("Student Name", "Anastasiia Belevich")
+                .checkResult("Student Email", "nasti@mail.ru")
 
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption("April");
-        $(".react-datepicker__year-select").selectOption("1990");
-        $(".react-datepicker__day--015").click();
-        $("#subjectsInput").setValue("тема");
-        $("#hobbies-checkbox-2").click();
-        $("#hobbies-checkbox-3").click();
-        $("#uploadPicture").uploadFromClasspath("img/cat.jpg");
-        $("#currentAddress").setValue("Адрес");
-        $("#state").click();
-        $(byText("Haryana")).click();
-        $("#city").click();
-        $(byText("Karnal")).click();
+                .checkResult("Gender", "Female")
+                .checkResult("Mobile", "1234567895")
+                .checkResult("Date of Birth", "22 April,1990")
 
-        $("#submit").click();
+                .checkResult("Hobbies", "Reading, Music")
+                .checkResult("Picture", "cat.jpg")
+                .checkResult("Address", "Адрес")
+                .checkResult("State and City", "Haryana Karnal")
+                ;
 
-        $(".modal-dialog").should(appear);
-        $$("tbody tr").findBy(text("Student Name")).shouldHave(text("Anastasiia Belevich"));
-        $$("tbody tr").findBy(text("Student Email")).shouldHave(text("nasti@mail.ru"));
-        $$("tbody tr").findBy(text("Gender")).shouldHave(text("Female"));
-        $$("tbody tr").findBy(text("Mobile")).shouldHave(text("1234567895"));
-        $$("tbody tr").findBy(text("Date of Birth")).shouldHave(text("15 April,1990"));
-        $$("tbody tr").findBy(text("Hobbies")).shouldHave(text("Reading, Music"));
-        $$("tbody tr").findBy(text("Picture")).shouldHave(text("cat.jpg"));
-        $$("tbody tr").findBy(text("Address")).shouldHave(text("Адрес"));
-        $$("tbody tr").findBy(text("State and City")).shouldHave(text("Haryana Karnal"));
 
     }
 
@@ -72,29 +67,25 @@ public class RegistrationFormWithPageObjectLesson6Test {
                 .inputFirstName("Anastasiia")
                 .inputLastName("Belevich")
                 .inputgender("Female")
-                .inputNumber("1234567895");
-
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption("April");
-        $(".react-datepicker__year-select").selectOption("1990");
-        $(".react-datepicker__day--015").click();
-
-        $("#submit").click();
-
-        $(".modal-dialog").should(appear);
-        $$("tbody tr").findBy(text("Student Name")).shouldHave(text("Anastasiia Belevich"));
-        $$("tbody tr").findBy(text("Gender")).shouldHave(text("Female"));
-        $$("tbody tr").findBy(text("Mobile")).shouldHave(text("1234567895"));
-        $$("tbody tr").findBy(text("Date of Birth")).shouldHave(text("15 April,1990"));
-
+                .inputNumber("1234567895")
+                .inputDateOfBirthday("April", "1990", "22")
+                .submit()
+                .checkModalAppeared()
+                .checkResult("Student Name", "Anastasiia Belevich")
+                .checkResult("Gender", "Female")
+                .checkResult("Mobile", "1234567895")
+                .checkResult("Date of Birth", "22 April,1990")
+        ;
 
     }
 
+
     @Test
     void notFillFormTest() {
-        registrationPage.openPage();
-        $("#submit").click();
-        $(".modal-content").shouldNotBe(visible, Duration.ofSeconds(10));
+        registrationPage.openPage()
+                .submit()
+                .checkModalNotAppeared();
+
 
         }
     //bs-form-valid-border-color: #198754;
